@@ -1,0 +1,24 @@
+07/04/2011
+- Fix search patient on system and click on that go to dashboard with another patient
+- Fix On queue exist patient we search on system with that patient it will create 2 patients on queue
+05/04/2011
+Fix show age on queue
+0.6
+- Search patient in system using advance search
+
+0.4
+- Remove admin link in admin panel
+########################################
+0.3
+- fixed bug hover tr tag
+#####################################################
+0.2
+- fixed bug throw error when select patient in search result.
+##################################
+0.1
+- require ddupatientdashboard version 0.2
+- require hospitalcore version 0.4
+- require registration version 1.5.3
+- patient queue, patient will be added to queue from registration module
+- search patient in queue
+- search patient in system
