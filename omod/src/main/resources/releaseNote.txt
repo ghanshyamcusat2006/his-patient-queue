@@ -1,3 +1,6 @@
+0.9.1
+- Added patient search for SOLAN.
+
 07/04/2011
 - Fix search patient on system and click on that go to dashboard with another patient
 - Fix On queue exist patient we search on system with that patient it will create 2 patients on queue

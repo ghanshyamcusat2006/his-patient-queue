@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/template/header.jsp" %>
 
 <script type="text/javascript">
-	var contextPath = "${pageContext.request.contextPath}";
+	var contextPath = "${pageContext.request.contextPath}";	
 </script>
 <%@ include file="includes/js_css.jsp" %>
 <b class="boxHeader">Patient queue</b>

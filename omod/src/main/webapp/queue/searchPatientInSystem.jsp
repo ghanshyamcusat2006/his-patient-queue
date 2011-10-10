@@ -1,5 +1,6 @@
 <%@ include file="/WEB-INF/template/include.jsp" %>
 <openmrs:require privilege="View Patient Queue" otherwise="/login.htm" redirect="index.htm" />
+<openmrs:globalProperty key="hospitalcore.hospitalName" defaultValue="ddu" var="hospitalName"/>
 <div id="searchbox"></div>
 <div id="patientResult"></div>
 
@@ -7,8 +8,9 @@
 
 	jQuery(document).ready(function() {
 		
-		jQuery("#searchbox").showPatientSearchBox({					
-			resultView: "/module/patientqueue/patientsearch/patientqueue",		
+		jQuery("#searchbox").showPatientSearchBox({		
+			searchBoxView: "${hospitalName}/default",
+			resultView: "/module/patientqueue/patientsearch/${hospitalName}/patientqueue",		
 			target: "#patientResult",
 			success: function(data){
 				QUEUE.initTableHover();
