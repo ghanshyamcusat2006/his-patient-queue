@@ -1,5 +1,5 @@
  <%--
- *  Copyright 2009 Society for Health Information Systems Programmes, India (HISP India)
+ *  Copyright 2013 Society for Health Information Systems Programmes, India (HISP India)
  *
  *  This file is part of Patient-queue module.
  *
@@ -15,8 +15,8 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with Patient-queue module.  If not, see <http://www.gnu.org/licenses/>.
- * Author : Sagar Bele
- * Date : 27-12-2012
+ * Author : Ghanshyam
+ * Date : 21-02-2013
   *
 --%> 
 <%@ include file="/WEB-INF/template/include.jsp" %>
