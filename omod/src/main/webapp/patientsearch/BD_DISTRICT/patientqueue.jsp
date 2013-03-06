@@ -15,7 +15,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with Patient-queue module.  If not, see <http://www.gnu.org/licenses/>.
- * Author : Sagar Bele
+ * Author : ghanshyam
  * Date : 27-12-2012
  *
 --%> 
