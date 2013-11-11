@@ -1,3 +1,7 @@
+0.9.5
+released by ghanshyam on 11-Nov-2013
+- #2937 Dealing with Dead Patient
+
 0.9.4
 released by ghanshyam on 20-may-2013
 -
