@@ -20,9 +20,10 @@
 
 package org.openmrs.module.patientqueue.extension.html;
 
-import org.openmrs.module.Extension;
+import org.openmrs.module.web.extension.LinkExt;
 
-public class PatientQueueHeader extends Extension {
+
+public class PatientQueueHeader extends LinkExt {
 
 	public MEDIA_TYPE getMediaType() {
 		return MEDIA_TYPE.html;
