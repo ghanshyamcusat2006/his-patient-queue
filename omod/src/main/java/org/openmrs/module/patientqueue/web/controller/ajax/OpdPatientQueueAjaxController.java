@@ -18,7 +18,6 @@
  *
  **/
 
-
 package org.openmrs.module.patientqueue.web.controller.ajax;
 
 import java.util.List;
@@ -26,37 +25,63 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.openmrs.Concept;
+import org.openmrs.ConceptAnswer;
+import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
+import org.openmrs.module.hospitalcore.model.TriagePatientQueue;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * <p> Class: OpdPatientQueueAjaxController </p>
- * <p> Package: org.openmrs.module.patientqueue.web.controller.ajax </p> 
- * <p> Author: Nguyen manh chuyen </p>
- * <p> Update by: Nguyen manh chuyen </p>
- * <p> Version: $1.0 </p>
- * <p> Create date: Feb 17, 2011 5:20:08 PM </p>
- * <p> Update date: Feb 17, 2011 5:20:08 PM </p>
+ * <p>
+ * Class: OpdPatientQueueAjaxController
+ * </p>
+ * <p>
+ * Package: org.openmrs.module.patientqueue.web.controller.ajax
+ * </p>
+ * <p>
+ * Author: Nguyen manh chuyen
+ * </p>
+ * <p>
+ * Update by: Nguyen manh chuyen
+ * </p>
+ * <p>
+ * Version: $1.0
+ * </p>
+ * <p>
+ * Create date: Feb 17, 2011 5:20:08 PM
+ * </p>
+ * <p>
+ * Update date: Feb 17, 2011 5:20:08 PM
+ * </p>
  **/
 @Controller("OpdPatientQueueAjaxController")
 public class OpdPatientQueueAjaxController {
-	@RequestMapping(value="/module/patientqueue/opdPatientQueueAjax.htm" , method=RequestMethod.GET)
-	public String viewOpdPatientQueue(
-            @RequestParam("opdId") Integer opdId,
-            Map<String, Object> model, HttpServletRequest request){
-		if( opdId != null && opdId > 0 ) {
-			PatientQueueService patientQueueService = Context.getService(PatientQueueService.class);
-			List<OpdPatientQueue> patientQueues = patientQueueService.listOpdPatientQueue(null, opdId, "",0, 0);
-			model.put("patientQueues", patientQueues );
-
+	@RequestMapping(value = "/module/patientqueue/opdPatientQueueAjax.htm", method = RequestMethod.GET)
+	public String viewOpdPatientQueue(@RequestParam("opdId") Integer opdId,
+			Map<String, Object> model, HttpServletRequest request) {
+		if (opdId != null && opdId > 0) {
+			ConceptService conceptService = Context.getConceptService();
+			Concept con = conceptService.getConcept(opdId);
+			PatientQueueService patientQueueService = Context
+					.getService(PatientQueueService.class);
+			ConceptAnswer conans = patientQueueService.getConceptAnswer(con);
+			String str = conans.getConcept().getName().toString();
+			if (str.equals("TRIAGE")) {
+				List<TriagePatientQueue> patientQueues = patientQueueService
+						.listTriagePatientQueue(null, opdId, "", 0, 0);
+				model.put("patientQueues", patientQueues);
+			} else if (str.equals("OPD WARD")) {
+				List<OpdPatientQueue> patientQueues = patientQueueService
+						.listOpdPatientQueue(null, opdId, "", 0, 0);
+				model.put("patientQueues", patientQueues);
+			}
 		}
 		return "/module/patientqueue/ajax/opdPatientQueueAjax";
 	}
-	
-	
 }

@@ -31,6 +31,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
+import org.openmrs.ConceptAnswer;
 import org.openmrs.ConceptClass;
 import org.openmrs.ConceptDatatype;
 import org.openmrs.ConceptName;
@@ -39,6 +40,7 @@ import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
+import org.openmrs.module.hospitalcore.model.TriagePatientQueue;
 import org.openmrs.module.patientqueue.util.OPDPatientQueueConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -80,12 +82,21 @@ public class OpdPatientQueueController {
 			Map<String, Object> model, HttpServletRequest request) {
 
 		if (opdId != null && opdId > 0) {
+			ConceptService conceptService = Context.getConceptService();
+			Concept con = conceptService.getConcept(opdId);
 			PatientQueueService patientQueueService = Context
 					.getService(PatientQueueService.class);
-
-			List<OpdPatientQueue> patientQueues = patientQueueService
-					.listOpdPatientQueue(null,  opdId, "", 0, 0);
-			model.put("patientQueues", patientQueues);
+			ConceptAnswer conans = patientQueueService.getConceptAnswer(con);
+			String str = conans.getConcept().getName().toString();
+			if (str.equals("TRIAGE")) {
+				List<TriagePatientQueue> patientQueues = patientQueueService
+						.listTriagePatientQueue(null, opdId, "", 0, 0);
+				model.put("patientQueues", patientQueues);
+			} else if (str.equals("OPD WARD")) {
+				List<OpdPatientQueue> patientQueues = patientQueueService
+						.listOpdPatientQueue(null, opdId, "", 0, 0);
+				model.put("patientQueues", patientQueues);
+			}
 		}
 
 		return "/module/patientqueue/queue/opdPatientQueue";
