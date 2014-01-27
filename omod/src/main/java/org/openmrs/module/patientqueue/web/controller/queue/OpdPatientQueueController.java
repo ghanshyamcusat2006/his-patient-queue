@@ -213,9 +213,13 @@ public class OpdPatientQueueController {
 		queue.setCreatedOn(new Date());
 		queue.setPatientIdentifier(patient.getPatientIdentifier()
 				.getIdentifier());
+		if(patient.getMiddleName()!=null){
 		queue.setPatientName(patient.getGivenName() + " "
 				+ patient.getMiddleName() + " " + patient.getFamilyName());
-
+		}
+		else {
+			queue.setPatientName(patient.getGivenName() + " " + patient.getFamilyName());
+		}
 		// TODO Is this what we want ???
 		String gpRevisit = Context.getAdministrationService()
 				.getGlobalProperty("registration.revisitConcept");
