@@ -33,6 +33,7 @@ import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.TriagePatientQueue;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -64,7 +65,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class OpdPatientQueueAjaxController {
 	@RequestMapping(value = "/module/patientqueue/opdPatientQueueAjax.htm", method = RequestMethod.GET)
 	public String viewOpdPatientQueue(@RequestParam("opdId") Integer opdId,
-			Map<String, Object> model, HttpServletRequest request) {
+			Map<String, Object> model, Model modl, HttpServletRequest request) {
 		if (opdId != null && opdId > 0) {
 			ConceptService conceptService = Context.getConceptService();
 			Concept con = conceptService.getConcept(opdId);
@@ -76,10 +77,12 @@ public class OpdPatientQueueAjaxController {
 				List<TriagePatientQueue> patientQueues = patientQueueService
 						.listTriagePatientQueue(null, opdId, "", 0, 0);
 				model.put("patientQueues", patientQueues);
+				modl.addAttribute("user","triageUser");
 			} else if (str.equals("OPD WARD")) {
 				List<OpdPatientQueue> patientQueues = patientQueueService
 						.listOpdPatientQueue(null, opdId, "", 0, 0);
 				model.put("patientQueues", patientQueues);
+				modl.addAttribute("user","opdUser");
 			}
 		}
 		return "/module/patientqueue/ajax/opdPatientQueueAjax";

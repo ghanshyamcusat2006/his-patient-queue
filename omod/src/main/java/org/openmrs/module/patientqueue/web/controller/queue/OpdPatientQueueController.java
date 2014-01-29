@@ -79,7 +79,7 @@ public class OpdPatientQueueController {
 	@RequestMapping(value = "/module/patientqueue/opdPatientQueue.htm", method = RequestMethod.GET)
 	public String viewOpdPatientQueue(
 			@RequestParam(value = "opdId", required = false) Integer opdId,
-			Map<String, Object> model, HttpServletRequest request) {
+			Map<String, Object> model, Model modl,HttpServletRequest request) {
 
 		if (opdId != null && opdId > 0) {
 			ConceptService conceptService = Context.getConceptService();
@@ -92,10 +92,12 @@ public class OpdPatientQueueController {
 				List<TriagePatientQueue> patientQueues = patientQueueService
 						.listTriagePatientQueue(null, opdId, "", 0, 0);
 				model.put("patientQueues", patientQueues);
+				modl.addAttribute("user","triageUser");
 			} else if (str.equals("OPD WARD")) {
 				List<OpdPatientQueue> patientQueues = patientQueueService
 						.listOpdPatientQueue(null, opdId, "", 0, 0);
 				model.put("patientQueues", patientQueues);
+				modl.addAttribute("user","opdUser");
 			}
 		}
 
@@ -146,7 +148,8 @@ public class OpdPatientQueueController {
 	}
 
 	@RequestMapping(value = "/module/patientqueue/selectPatientInQueue.htm", method = RequestMethod.GET)
-	public String selectPatientInQueue(@RequestParam("id") Integer queueItemId) {
+	public String selectPatientInQueue(@RequestParam("id") Integer queueItemId,
+			@RequestParam(value="usr",required=false) String usr) {
 		PatientQueueService queueService = Context
 				.getService(PatientQueueService.class);
 		OpdPatientQueue queue = queueService
@@ -175,11 +178,20 @@ public class OpdPatientQueueController {
 		 * queueService.saveOpdPatientQueueLog(queueLog);
 		 * queueService.deleteOpdPatientQueue(queue);
 		 */
-		return "redirect:/module/patientdashboard/main.htm?patientId="
+		if (usr.equals("triageUser")) {
+		return "redirect:/module/patientdashboard/triageForm.htm?patientId="
 				+ queue.getPatient().getPatientId() + "&opdId="
 				+ queue.getOpdConcept().getConceptId() + "&referralId="
 				+ queue.getReferralConcept().getConceptId() + "&queueId="
 				+ queue.getId();
+		}
+		else{
+			return "redirect:/module/patientdashboard/main.htm?patientId="
+			+ queue.getPatient().getPatientId() + "&opdId="
+			+ queue.getOpdConcept().getConceptId() + "&referralId="
+			+ queue.getReferralConcept().getConceptId() + "&queueId="
+			+ queue.getId();	
+		}
 	}
 
 	@RequestMapping(value = "/module/patientqueue/selectPatientInSystem.htm", method = RequestMethod.GET)

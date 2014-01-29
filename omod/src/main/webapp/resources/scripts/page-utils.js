@@ -68,9 +68,9 @@ QUEUE={
 			}
 		},
 		
-		selectPatientInQueue : function(queueId)
+		selectPatientInQueue : function(queueId,user)
 		{
-			ACT.go("selectPatientInQueue.htm?id="+queueId);
+			ACT.go("selectPatientInQueue.htm?id="+queueId+"&usr="+user);
 		},
 		selectPatientInSystem : function(patientId)
 		{
