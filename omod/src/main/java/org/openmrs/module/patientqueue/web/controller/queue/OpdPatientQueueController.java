@@ -18,7 +18,6 @@
  *
  **/
 
-
 package org.openmrs.module.patientqueue.web.controller.queue;
 
 import java.util.Date;
@@ -79,7 +78,7 @@ public class OpdPatientQueueController {
 	@RequestMapping(value = "/module/patientqueue/opdPatientQueue.htm", method = RequestMethod.GET)
 	public String viewOpdPatientQueue(
 			@RequestParam(value = "opdId", required = false) Integer opdId,
-			Map<String, Object> model, Model modl,HttpServletRequest request) {
+			Map<String, Object> model, Model modl, HttpServletRequest request) {
 
 		if (opdId != null && opdId > 0) {
 			ConceptService conceptService = Context.getConceptService();
@@ -92,12 +91,12 @@ public class OpdPatientQueueController {
 				List<TriagePatientQueue> patientQueues = patientQueueService
 						.listTriagePatientQueue(null, opdId, "", 0, 0);
 				model.put("patientQueues", patientQueues);
-				modl.addAttribute("user","triageUser");
+				modl.addAttribute("user", "triageUser");
 			} else if (str.equals("OPD WARD")) {
 				List<OpdPatientQueue> patientQueues = patientQueueService
 						.listOpdPatientQueue(null, opdId, "", 0, 0);
 				model.put("patientQueues", patientQueues);
-				modl.addAttribute("user","opdUser");
+				modl.addAttribute("user", "opdUser");
 			}
 		}
 
@@ -149,48 +148,36 @@ public class OpdPatientQueueController {
 
 	@RequestMapping(value = "/module/patientqueue/selectPatientInQueue.htm", method = RequestMethod.GET)
 	public String selectPatientInQueue(@RequestParam("id") Integer queueItemId,
-			@RequestParam(value="usr",required=false) String usr) {
+			@RequestParam(value = "usr", required = false) String usr) {
 		PatientQueueService queueService = Context
 				.getService(PatientQueueService.class);
-		OpdPatientQueue queue = queueService
-				.getOpdPatientQueueById(queueItemId);
-		queue.setStatus(Context.getAuthenticatedUser().getGivenName() + " "
-				+ OPDPatientQueueConstants.STATUS);
-		queue.setUser(Context.getAuthenticatedUser());
-		queueService.saveOpdPatientQueue(queue);
-		// change requirement when we come to dashboard if conclu visit will
-		// delete
-		/*
-		 * queue.setUser(Context.getAuthenticatedUser());
-		 * 
-		 * OpdPatientQueueLog queueLog = new OpdPatientQueueLog();
-		 * queueLog.setOpdConcept(queue.getOpdConcept());
-		 * queueLog.setOpdConceptName(queue.getOpdConceptName());
-		 * queueLog.setPatient(queue.getPatient());
-		 * queueLog.setCreatedOn(queue.getCreatedOn());
-		 * queueLog.setPatientIdentifier(queue.getPatientIdentifier());
-		 * queueLog.setPatientName(queue.getPatientName());
-		 * queueLog.setReferralConcept(queue.getReferralConcept());
-		 * queueLog.setReferralConceptName(queue.getReferralConceptName());
-		 * queueLog.setSex(queue.getSex()); queueLog.setUser(queue.getUser());
-		 * 
-		 * OpdPatientQueueLog opdPatientLog =
-		 * queueService.saveOpdPatientQueueLog(queueLog);
-		 * queueService.deleteOpdPatientQueue(queue);
-		 */
 		if (usr.equals("triageUser")) {
-		return "redirect:/module/patientdashboard/triageForm.htm?patientId="
-				+ queue.getPatient().getPatientId() + "&opdId="
-				+ queue.getOpdConcept().getConceptId() + "&referralId="
-				+ queue.getReferralConcept().getConceptId() + "&queueId="
-				+ queue.getId();
-		}
-		else{
+			TriagePatientQueue queue = queueService
+					.getTriagePatientQueueById(queueItemId);
+			queue.setStatus(Context.getAuthenticatedUser().getGivenName() + " "
+					+ OPDPatientQueueConstants.STATUS);
+			queue.setUser(Context.getAuthenticatedUser());
+			queueService.saveTriagePatientQueue(queue);
+			return "redirect:/module/patientdashboard/triageForm.htm?patientId="
+					+ queue.getPatient().getPatientId()
+					+ "&opdId="
+					+ queue.getTriageConcept().getConceptId()
+					+ "&referralId="
+					+ queue.getReferralConcept().getConceptId()
+					+ "&queueId="
+					+ queue.getId();
+		} else {
+			OpdPatientQueue queue = queueService
+					.getOpdPatientQueueById(queueItemId);
+			queue.setStatus(Context.getAuthenticatedUser().getGivenName() + " "
+					+ OPDPatientQueueConstants.STATUS);
+			queue.setUser(Context.getAuthenticatedUser());
+			queueService.saveOpdPatientQueue(queue);
 			return "redirect:/module/patientdashboard/main.htm?patientId="
-			+ queue.getPatient().getPatientId() + "&opdId="
-			+ queue.getOpdConcept().getConceptId() + "&referralId="
-			+ queue.getReferralConcept().getConceptId() + "&queueId="
-			+ queue.getId();	
+					+ queue.getPatient().getPatientId() + "&opdId="
+					+ queue.getOpdConcept().getConceptId() + "&referralId="
+					+ queue.getReferralConcept().getConceptId() + "&queueId="
+					+ queue.getId();
 		}
 	}
 
@@ -207,15 +194,16 @@ public class OpdPatientQueueController {
 			log.info("OPD Ward is null");
 			return "redirect:/module/patientqueue/main.htm";
 		}
-		
-		OpdPatientQueue opq = queueService.getOpdPatientQueue(patient.getPatientIdentifier().getIdentifier(), opdId);
-		
-		if(opq!=null){
+
+		OpdPatientQueue opq = queueService.getOpdPatientQueue(patient
+				.getPatientIdentifier().getIdentifier(), opdId);
+
+		if (opq != null) {
 			return "redirect:/module/patientdashboard/main.htm?patientId="
-			+ opq.getPatient().getPatientId() + "&opdId="
-			+ opq.getOpdConcept().getConceptId() + "&referralId="
-			+ opq.getReferralConcept()
-			.getConceptId() + "&queueId=" + opq.getId();
+					+ opq.getPatient().getPatientId() + "&opdId="
+					+ opq.getOpdConcept().getConceptId() + "&referralId="
+					+ opq.getReferralConcept().getConceptId() + "&queueId="
+					+ opq.getId();
 		}
 
 		OpdPatientQueue queue = new OpdPatientQueue();
@@ -225,12 +213,12 @@ public class OpdPatientQueueController {
 		queue.setCreatedOn(new Date());
 		queue.setPatientIdentifier(patient.getPatientIdentifier()
 				.getIdentifier());
-		if(patient.getMiddleName()!=null){
-		queue.setPatientName(patient.getGivenName() + " "
-				+ patient.getMiddleName() + " " + patient.getFamilyName());
-		}
-		else {
-			queue.setPatientName(patient.getGivenName() + " " + patient.getFamilyName());
+		if (patient.getMiddleName() != null) {
+			queue.setPatientName(patient.getGivenName() + " "
+					+ patient.getMiddleName() + " " + patient.getFamilyName());
+		} else {
+			queue.setPatientName(patient.getGivenName() + " "
+					+ patient.getFamilyName());
 		}
 		// TODO Is this what we want ???
 		String gpRevisit = Context.getAdministrationService()
@@ -260,11 +248,14 @@ public class OpdPatientQueueController {
 				.getConceptId() : null;
 		queue.setBirthDate(patient.getBirthdate());
 		queue.setUser(Context.getAuthenticatedUser());
-		queue.setStatus(Context.getAuthenticatedUser().getGivenName() + " "+ OPDPatientQueueConstants.STATUS);
+		queue.setStatus(Context.getAuthenticatedUser().getGivenName() + " "
+				+ OPDPatientQueueConstants.STATUS);
 
-		OpdPatientQueue opdPatientQueue = queueService.saveOpdPatientQueue(queue);
-		//HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
-		//hcs.createObsGroup(patient, HospitalCoreConstants.PROPERTY_OBSGROUP);
+		OpdPatientQueue opdPatientQueue = queueService
+				.saveOpdPatientQueue(queue);
+		// HospitalCoreService hcs =
+		// Context.getService(HospitalCoreService.class);
+		// hcs.createObsGroup(patient, HospitalCoreConstants.PROPERTY_OBSGROUP);
 
 		return "redirect:/module/patientdashboard/main.htm?patientId="
 				+ queue.getPatient().getPatientId() + "&opdId="
