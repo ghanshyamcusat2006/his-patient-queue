@@ -28,7 +28,7 @@
 	<th><spring:message code="patientqueue.queue.patientName"/></th>
 	<th>Age</th>
 	<th>Gender</th>
-	<th><spring:message code="patientqueue.queue.referralType"/></th>
+	<th><spring:message code="patientqueue.queue.visitStatus"/></th>
 	<th><spring:message code="patientqueue.queue.status"/></th>
 </tr>
 <c:choose>
