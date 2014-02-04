@@ -250,17 +250,20 @@ public class OpdPatientQueueController {
 		queue.setUser(Context.getAuthenticatedUser());
 		queue.setStatus(Context.getAuthenticatedUser().getGivenName() + " "
 				+ OPDPatientQueueConstants.STATUS);
-
-		OpdPatientQueue opdPatientQueue = queueService
-				.saveOpdPatientQueue(queue);
-		// HospitalCoreService hcs =
-		// Context.getService(HospitalCoreService.class);
-		// hcs.createObsGroup(patient, HospitalCoreConstants.PROPERTY_OBSGROUP);
-
-		return "redirect:/module/patientdashboard/main.htm?patientId="
-				+ queue.getPatient().getPatientId() + "&opdId="
-				+ queue.getOpdConcept().getConceptId() + "&referralId="
-				+ referralId + "&queueId=" + opdPatientQueue.getId();
+		
+		Boolean pd = patient.getDead();
+		OpdPatientQueue opdPatientQueue = null;
+		if (pd == true) {
+			return "redirect:/module/patientdashboard/main.htm?patientId="
+			+ patientId + "&opdId=" + opdId + "&referralId="
+			+ referralId;
+			} else {
+			opdPatientQueue = queueService.saveOpdPatientQueue(queue);
+			return "redirect:/module/patientdashboard/main.htm?patientId="
+			+ queue.getPatient().getPatientId() + "&opdId="
+			+ queue.getOpdConcept().getConceptId() + "&referralId="
+			+ referralId + "&queueId=" + opdPatientQueue.getId();
+			}
 	}
 
 }
