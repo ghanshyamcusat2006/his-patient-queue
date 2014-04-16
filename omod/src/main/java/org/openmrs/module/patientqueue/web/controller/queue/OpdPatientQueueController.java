@@ -39,6 +39,7 @@ import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
+import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.model.TriagePatientQueue;
 import org.openmrs.module.patientqueue.util.OPDPatientQueueConstants;
 import org.springframework.stereotype.Controller;
@@ -204,6 +205,16 @@ public class OpdPatientQueueController {
 					+ opq.getOpdConcept().getConceptId() + "&referralId="
 					+ opq.getReferralConcept().getConceptId() + "&queueId="
 					+ opq.getId();
+		}
+		
+		OpdPatientQueueLog opql = queueService.getOpdPatientQueueLog(patient
+				.getPatientIdentifier().getIdentifier(), opdId);
+		if (opql != null) {
+			return "redirect:/module/patientdashboard/main.htm?patientId="
+					+ opql.getPatient().getPatientId() + "&opdId="
+					+ opql.getOpdConcept().getConceptId() + "&referralId="
+					+ opql.getReferralConcept().getConceptId() + "&opdLogId="
+					+ opql.getId();
 		}
 
 		OpdPatientQueue queue = new OpdPatientQueue();
