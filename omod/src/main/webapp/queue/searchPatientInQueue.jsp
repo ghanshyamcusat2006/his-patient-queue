@@ -39,7 +39,7 @@
 		<c:forEach items="${patientQueues }" var="queue" varStatus="varStatus">
 			<tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '  onclick="QUEUE.selectPatientInQueue(${queue.id})">
 				<td >${queue.patientIdentifier}</td>
-				<td> ${queue.patientName} </td>
+				<td> ${fn:replace(queue.patientName,',',' ')}  </td>
              	<td>${queue.age }</td>
 			</tr>
 		</c:forEach>
