@@ -225,8 +225,8 @@ public class OpdPatientQueueController {
 		queue.setPatientIdentifier(patient.getPatientIdentifier()
 				.getIdentifier());
 		if (patient.getMiddleName() != null) {
-			queue.setPatientName(patient.getGivenName() + " "
-					+ patient.getMiddleName() + " " + patient.getFamilyName());
+			queue.setPatientName(patient.getGivenName() + " " + patient.getFamilyName()
+					+ patient.getMiddleName() + " " );
 		} else {
 			queue.setPatientName(patient.getGivenName() + " "
 					+ patient.getFamilyName());

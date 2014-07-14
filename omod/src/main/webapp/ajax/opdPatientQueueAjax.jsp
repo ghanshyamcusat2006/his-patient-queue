@@ -37,7 +37,7 @@
 	<tr  align="center" class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } ' onclick="QUEUE.selectPatientInQueue(${queue.id},'${user}')">
 		<td><c:out value="${varStatus.count }"/></td>	
 		<td>${queue.patientIdentifier}</td>
-		<td>${queue.patientName}</td>
+		<td>${fn:replace(fn:replace(queue.patientName,',',' '),'null','')}</td>
 		<td>${queue.age }</td>
 		<td>${queue.sex}</td>
 		<td>${queue.referralConceptName}</td>
