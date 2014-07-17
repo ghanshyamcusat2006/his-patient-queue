@@ -60,10 +60,10 @@
 			<td><b>Name</b></td>
 			<td><b>Age</b></td>
 			<td><b>Gender</b></td>			
-			<td><b>Birthdate</b></td>
+			<td><b>Category</b></td>
 			<td><b>Relative Name</b></td>
 			<td><b>Phone number</b></td>
-			<td><b>National ID </b></td>
+			<td><b>Last day of visit</b></td>
 		</tr>
 		<c:forEach items="${patients}" var="patient" varStatus="varStatus">
 			<tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } patientSearchRow' onclick="QUEUE.selectPatientInSystem(${patient.patientId})">				
@@ -85,14 +85,17 @@
                 		<c:otherwise><img src="${pageContext.request.contextPath}/images/female.gif"/></c:otherwise>
                 	</c:choose>
 				</td>                
-				<td> 
-                	<openmrs:formatDate date="${patient.birthdate}"/>
-                </td>
-				<td> 
-                	<%
+				<td> <%
 						Patient patient = (Patient) pageContext.getAttribute("patient");
 						Map<Integer, Map<Integer, String>> attributes = (Map<Integer, Map<Integer, String>>) pageContext.findAttribute("attributeMap");						
 						Map<Integer, String> patientAttributes = (Map<Integer, String>) attributes.get(patient.getPatientId());						
+						String category = patientAttributes.get(14); 
+						if(category!=null)
+							out.print(category);
+					%>
+                </td>
+				<td> 
+                	<%
 						String relativeName = patientAttributes.get(8); 
 						if(relativeName!=null)
 							out.print(relativeName);
@@ -106,11 +109,7 @@
 					%>
                 </td>
 				<td> 
-                	<%						
-						String patientNationalId = patientAttributes.get(20);
-						if(patientNationalId!=null)
-							out.print(patientNationalId);					
-					%>
+                <openmrs:formatDate date="${lastVisitTime[patient.patientId]}"/>              	
                 </td>                
 			</tr>
 		</c:forEach>
