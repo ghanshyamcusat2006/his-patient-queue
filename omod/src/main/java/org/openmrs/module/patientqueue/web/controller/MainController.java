@@ -46,10 +46,12 @@ public class MainController {
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public String firstView(@RequestParam(value="opdId",required=false) Integer opdId, Model model, HttpSession session){
+		String roleName="";
 		User usr = Context.getAuthenticatedUser();
 		Set<Role> rl = usr.getRoles();
 		for(Role r:rl){
 			if(r.getName().equalsIgnoreCase("Triage User")){
+				roleName="triageUser";
 				Concept triageConcept = Context.getConceptService().getConceptByName("TRIAGE");
 				List<ConceptAnswer> list = (triageConcept!= null ?  new ArrayList<ConceptAnswer>(triageConcept.getAnswers()) : null);
 				if(CollectionUtils.isNotEmpty(list)){
@@ -65,6 +67,7 @@ public class MainController {
 				model.addAttribute("opdId", opdId);
 			}
 			else if(r.getName().equalsIgnoreCase("Doctor")){
+				roleName="doctor";
 				Concept opdWardConcept = Context.getConceptService().getConceptByName("OPD WARD");
 				List<ConceptAnswer> list = (opdWardConcept!= null ?  new ArrayList<ConceptAnswer>(opdWardConcept.getAnswers()) : null);
 				if(CollectionUtils.isNotEmpty(list)){
@@ -80,6 +83,7 @@ public class MainController {
 				model.addAttribute("opdId", opdId);
 			}
 			else{
+				roleName="sd";
 				Concept opdWardConcept = Context.getConceptService().getConceptByName("OPD WARD");
 				Concept triageConcept = Context.getConceptService().getConceptByName("TRIAGE");
 				List<ConceptAnswer> tList = (triageConcept!= null ?  new ArrayList<ConceptAnswer>(triageConcept.getAnswers()) : null);
@@ -98,6 +102,15 @@ public class MainController {
 				model.addAttribute("opdId", opdId);
 			}
 		}
-		return "module/patientqueue/main";
+		if(roleName.equals("triageUser")){
+			return "module/patientqueue/mainTriage";	
+		}
+		else if(roleName.equals("doctor")){
+			return "module/patientqueue/mainOPD";	
+		}
+		else{
+			return "module/patientqueue/main";	
+		}
+		
 	}
 }

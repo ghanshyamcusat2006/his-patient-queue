@@ -28,6 +28,7 @@
 	<th><spring:message code="patientqueue.queue.patientName"/></th>
 	<th>Age</th>
 	<th>Gender</th>
+	<th>Category</th>
 	<th><spring:message code="patientqueue.queue.visitStatus"/></th>
 	<th><spring:message code="patientqueue.queue.status"/></th>
 </tr>
@@ -40,6 +41,7 @@
 		<td>${fn:replace(fn:replace(queue.patientName,',',' '),'null','')}</td>
 		<td>${queue.age }</td>
 		<td>${queue.sex}</td>
+		<td>${queue.category}</td>
 		<td>${queue.referralConceptName}</td>
 		<td>${queue.status}</td>
 	</tr>

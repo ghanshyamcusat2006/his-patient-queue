@@ -35,8 +35,11 @@ import org.openmrs.ConceptClass;
 import org.openmrs.ConceptDatatype;
 import org.openmrs.ConceptName;
 import org.openmrs.Patient;
+import org.openmrs.PersonAttribute;
+import org.openmrs.PersonAttributeType;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
@@ -185,6 +188,8 @@ public class OpdPatientQueueController {
 	@RequestMapping(value = "/module/patientqueue/selectPatientInSystem.htm", method = RequestMethod.GET)
 	public String selectPatientInSystem(@RequestParam("id") Integer patientId,
 			@RequestParam("opdId") Integer opdId) {
+		HospitalCoreService hcs = (HospitalCoreService) Context
+		.getService(HospitalCoreService.class);
 		PatientQueueService queueService = Context
 				.getService(PatientQueueService.class);
 		Patient patient = Context.getPatientService().getPatient(patientId);
@@ -217,6 +222,15 @@ public class OpdPatientQueueController {
 					+ opql.getId();
 		}
 
+		List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
+		String selectedCategory="";
+		 for (PersonAttribute pa : pas) {
+			 PersonAttributeType attributeType = pa.getAttributeType(); 
+			 if(attributeType.getPersonAttributeTypeId()==14){
+				 selectedCategory=pa.getValue(); 
+			 }
+		 }
+		
 		OpdPatientQueue queue = new OpdPatientQueue();
 		queue.setOpdConcept(opdConcept);
 		queue.setOpdConceptName(opdConcept.getName().getName());
@@ -261,6 +275,7 @@ public class OpdPatientQueueController {
 		queue.setUser(Context.getAuthenticatedUser());
 		queue.setStatus(Context.getAuthenticatedUser().getGivenName() + " "
 				+ OPDPatientQueueConstants.STATUS);
+		queue.setCategory(selectedCategory);
 		
 		Boolean pd = patient.getDead();
 		OpdPatientQueue opdPatientQueue = null;

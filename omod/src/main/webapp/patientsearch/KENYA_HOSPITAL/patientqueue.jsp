@@ -56,14 +56,14 @@
 	<c:when test="${not empty patients}" >		
 	<table style="width:100%">
 		<tr>			
-			<td><b>Identifier</b></td>
+			<td><b>Patient ID</b></td>
 			<td><b>Name</b></td>
 			<td><b>Age</b></td>
 			<td><b>Gender</b></td>			
 			<td><b>Category</b></td>
 			<td><b>Relative Name</b></td>
 			<td><b>Phone number</b></td>
-			<td><b>Last day of visit</b></td>
+			<td><b>Date Of Previous Visit</b></td>
 		</tr>
 		<c:forEach items="${patients}" var="patient" varStatus="varStatus">
 			<tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } patientSearchRow' onclick="QUEUE.selectPatientInSystem(${patient.patientId})">				

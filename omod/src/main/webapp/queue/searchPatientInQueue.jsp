@@ -21,7 +21,7 @@
 <openmrs:require privilege="View Patient Queue" otherwise="/login.htm" redirect="index.htm" />
 <table>
 <tr>
-   <td>Enter Patient ID/Name: </td>
+   <td>Patient Name/ID: </td>
    <td><input type="text" id="queueText" value="${identifier}" /></td>
    <td><input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="Search" onClick="QUEUE.searchQueue();"/></td>
 </tr>

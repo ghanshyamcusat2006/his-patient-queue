@@ -25,7 +25,7 @@
 	var contextPath = "${pageContext.request.contextPath}";	
 </script>
 <%@ include file="includes/js_css.jsp" %>
-<b class="boxHeader">Patient queue</b>
+<b class="boxHeader">Patient Queue</b>
 <input type="hidden" id="pageId" value="patientQueue"/>
 <div class="box" >
 Location: <select id="opdCombo"  onchange="QUEUE.changeOPD(this)">
@@ -38,9 +38,9 @@ Location: <select id="opdCombo"  onchange="QUEUE.changeOPD(this)">
 <input type="hidden" id="intervalId" value=""/>
 <div id="tabs">
      <ul>
-         <li><a href="opdPatientQueue.htm?opdId=${opdId}"  title="Patient queue"><span >Patient queue</span></a></li>
-         <li><a href="searchPatientInQueue.htm"   title="Search patient in queue"><span>Search patient in queue</span></a></li>
-         <li><a href="searchPatientInSystem.htm"  title="Search patient in system"><span >Search patient in system</span></a></li>
+         <li><a href="opdPatientQueue.htm?opdId=${opdId}"  title="Patient queue"><span >Patient Queue</span></a></li>
+         <li><a href="searchPatientInQueue.htm"   title="Search patient in queue"><span>Search Patient in Queue</span></a></li>
+         <li><a href="searchPatientInSystem.htm"  title="Search patient in system"><span >Search Patient in System</span></a></li>
      </ul>
      
      <div id="Patient_queue"></div>
