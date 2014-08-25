@@ -105,11 +105,8 @@ public class MainController {
 		if(roleName.equals("triageUser")){
 			return "module/patientqueue/mainTriage";	
 		}
-		else if(roleName.equals("doctor")){
-			return "module/patientqueue/mainOPD";	
-		}
 		else{
-			return "module/patientqueue/main";	
+			return "module/patientqueue/mainOPD";	
 		}
 		
 	}
