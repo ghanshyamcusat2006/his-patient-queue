@@ -31,9 +31,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
-import org.openmrs.ConceptClass;
-import org.openmrs.ConceptDatatype;
-import org.openmrs.ConceptName;
 import org.openmrs.Patient;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
@@ -166,8 +163,8 @@ public class OpdPatientQueueController {
 					+ queue.getPatient().getPatientId()
 					+ "&opdId="
 					+ queue.getTriageConcept().getConceptId()
-					+ "&referralId="
-					+ queue.getReferralConcept().getConceptId()
+					+ "&visitStatus="
+					+ queue.getVisitStatus()
 					+ "&queueId="
 					+ queue.getId();
 		} else {
@@ -179,8 +176,8 @@ public class OpdPatientQueueController {
 			queueService.saveOpdPatientQueue(queue);
 			return "redirect:/module/patientdashboard/main.htm?patientId="
 					+ queue.getPatient().getPatientId() + "&opdId="
-					+ queue.getOpdConcept().getConceptId() + "&referralId="
-					+ queue.getReferralConcept().getConceptId() + "&queueId="
+					+ queue.getOpdConcept().getConceptId() + "&visitStatus="
+					+ queue.getVisitStatus() + "&queueId="
 					+ queue.getId();
 		}
 	}
@@ -207,8 +204,8 @@ public class OpdPatientQueueController {
 		if (opq != null) {
 			return "redirect:/module/patientdashboard/main.htm?patientId="
 					+ opq.getPatient().getPatientId() + "&opdId="
-					+ opq.getOpdConcept().getConceptId() + "&referralId="
-					+ opq.getReferralConcept().getConceptId() + "&queueId="
+					+ opq.getOpdConcept().getConceptId() + "&visitStatus="
+					+ opq.getVisitStatus() + "&queueId="
 					+ opq.getId();
 		}
 		
@@ -217,8 +214,8 @@ public class OpdPatientQueueController {
 		if (opql != null) {
 			return "redirect:/module/patientdashboard/main.htm?patientId="
 					+ opql.getPatient().getPatientId() + "&opdId="
-					+ opql.getOpdConcept().getConceptId() + "&referralId="
-					+ opql.getReferralConcept().getConceptId() + "&opdLogId="
+					+ opql.getOpdConcept().getConceptId() + "&visitStatus="
+					+ opql.getVisitStatus() + "&opdLogId="
 					+ opql.getId();
 		}
 
@@ -246,6 +243,7 @@ public class OpdPatientQueueController {
 					+ patient.getFamilyName());
 		}
 		// TODO Is this what we want ???
+		/*
 		String gpRevisit = Context.getAdministrationService()
 				.getGlobalProperty("registration.revisitConcept");
 		Concept conRevisit = Context.getConceptService().getConcept(gpRevisit);
@@ -266,29 +264,30 @@ public class OpdPatientQueueController {
 			queue.setReferralConcept(conRevisit);
 			queue.setReferralConceptName(conRevisit.getName().getName());
 		}
+		*/
 		queue.setSex(patient.getGender());
 		queue.setUser(Context.getAuthenticatedUser());
 
-		Integer referralId = conRevisit != null ? queue.getReferralConcept()
-				.getConceptId() : null;
+		//Integer referralId = conRevisit != null ? queue.getReferralConcept()
+		//		.getConceptId() : null;
 		queue.setBirthDate(patient.getBirthdate());
 		queue.setUser(Context.getAuthenticatedUser());
 		queue.setStatus(Context.getAuthenticatedUser().getGivenName() + " "
 				+ OPDPatientQueueConstants.STATUS);
 		queue.setCategory(selectedCategory);
+		queue.setVisitStatus("REVISIT");
 		
 		Boolean pd = patient.getDead();
 		OpdPatientQueue opdPatientQueue = null;
 		if (pd == true) {
 			return "redirect:/module/patientdashboard/main.htm?patientId="
-			+ patientId + "&opdId=" + opdId + "&referralId="
-			+ referralId;
+			+ patientId + "&opdId=" + opdId;
 			} else {
 			opdPatientQueue = queueService.saveOpdPatientQueue(queue);
 			return "redirect:/module/patientdashboard/main.htm?patientId="
 			+ queue.getPatient().getPatientId() + "&opdId="
-			+ queue.getOpdConcept().getConceptId() + "&referralId="
-			+ referralId + "&queueId=" + opdPatientQueue.getId();
+			+ queue.getOpdConcept().getConceptId() + "&visitStatus="
+			+ queue.getVisitStatus() + "&queueId=" + opdPatientQueue.getId();
 			}
 	}
 

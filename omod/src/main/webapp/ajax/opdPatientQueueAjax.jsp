@@ -42,7 +42,7 @@
 		<td>${queue.age }</td>
 		<td>${queue.sex}</td>
 		<td>${queue.category}</td>
-		<td>${queue.referralConceptName}</td>
+		<td>${queue.visitStatus}</td>
 		<td>${queue.status}</td>
 	</tr>
 </c:forEach>
