@@ -108,8 +108,9 @@ public class OpdPatientQueueController {
 	public String searchOpdPatientQueue(
 			@RequestParam(value = "opdId", required = false) Integer opdId,
 			@RequestParam(value = "text", required = false) String text,
-			Map<String, Object> model, HttpServletRequest request) {
+			Map<String, Object> model, Model modl, HttpServletRequest request) {
 
+		/*
 		if (StringUtils.isNotBlank(text) && opdId != null && opdId > 0) {
 			String prefix = Context.getAdministrationService()
 					.getGlobalProperty("registration.identifier_prefix");
@@ -123,6 +124,27 @@ public class OpdPatientQueueController {
 			model.put("patientQueues", patientQueues);
 			model.put("queueText", text);
 		}
+		*/
+		if (StringUtils.isNotBlank(text) && opdId != null && opdId > 0) {
+			ConceptService conceptService = Context.getConceptService();
+			Concept con = conceptService.getConcept(opdId);
+			PatientQueueService patientQueueService = Context
+					.getService(PatientQueueService.class);
+			ConceptAnswer conans = patientQueueService.getConceptAnswer(con);
+			String str = conans.getConcept().getName().toString();
+			if (str.equals("TRIAGE")) {
+				List<TriagePatientQueue> patientQueues = patientQueueService
+						.listTriagePatientQueue(text.trim(), opdId, "", 0, 0);
+				model.put("patientQueues", patientQueues);
+				modl.addAttribute("user", "triageUser");
+			} else if (str.equals("OPD WARD")) {
+				List<OpdPatientQueue> patientQueues = patientQueueService
+						.listOpdPatientQueue(text.trim(), opdId, "", 0, 0);
+				model.put("patientQueues", patientQueues);
+				modl.addAttribute("user", "opdUser");
+			}
+		}
+		model.put("queueText", text);
 
 		return "/module/patientqueue/queue/searchPatientInQueue";
 	}
