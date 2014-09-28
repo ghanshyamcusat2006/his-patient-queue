@@ -23,7 +23,7 @@
 
 <table cellpadding="5" cellspacing="0" width="100%" id="queueList">
 <tr align="center" >
-	<th>#</th>
+	<th>S.No</th>
 	<th><spring:message code="patientqueue.queue.patientId"/></th>
 	<th><spring:message code="patientqueue.queue.patientName"/></th>
 	<th>Age</th>
@@ -42,7 +42,11 @@
 		<td>${queue.age }</td>
 		<td>${queue.sex}</td>
 		<td>${queue.category}</td>
-		<td>${queue.visitStatus}</td>
+		<td>${queue.visitStatus}
+		<c:if test="${empty queue.visitStatus}">
+		Referred From ${queue.referralConceptName}
+		</c:if>
+		</td>
 		<td>${queue.status}</td>
 	</tr>
 </c:forEach>
