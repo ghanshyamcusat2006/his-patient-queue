@@ -38,6 +38,7 @@ public class PatientQueueHeader extends LinkExt {
 	}
 
 	public String getUrl() {
-		return "module/patientqueue/main.htm";
+	//	return "module/patientqueue/main.htm";
+		return "module/patientqueue/chooseOpd.htm";
 	}
 }

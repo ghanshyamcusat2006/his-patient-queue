@@ -25,15 +25,10 @@
 	var contextPath = "${pageContext.request.contextPath}";	
 </script>
 <%@ include file="includes/js_css.jsp" %>
-<b class="boxHeader">Patient Queue</b>
+
 <input type="hidden" id="pageId" value="patientQueue"/>
 <div class="box" >
-Location: <select id="opdCombo"  onchange="QUEUE.changeOPD(this)">
-	<option value="0">-Please select-</option>
-	<c:forEach items="${listOPD}" var="opd">
-		<option value="${opd.answerConcept.id }"  <c:if test="${opdId == opd.answerConcept.id  }">selected="selected"</c:if>>${opd.answerConcept.name}</option>
-	</c:forEach>
-</select>
+
 <br/>
 <input type="hidden" id="intervalId" value=""/>
 <div id="tabs">

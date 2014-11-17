@@ -53,8 +53,8 @@ public class AdminList extends AdministrationSectionExt {
 	public Map<String, String> getLinks() {
 		
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("module/patientqueue/main.htm", "patientqueue.title");
-		
+	//	map.put("module/patientqueue/main.htm", "patientqueue.title");
+		map.put("module/patientqueue/chooseOpd.htm", "patientqueue.title");
 		return map;
 	}
 	
