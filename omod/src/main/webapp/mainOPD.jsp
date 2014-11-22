@@ -27,6 +27,7 @@
 <%@ include file="includes/js_css.jsp" %>
 
 <input type="hidden" id="pageId" value="patientQueue"/>
+<input type="hidden" id="opdCombo" value="${opdId}"/>
 <div class="box" >
 
 <br/> 

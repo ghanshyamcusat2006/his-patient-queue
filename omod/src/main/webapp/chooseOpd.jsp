@@ -30,7 +30,7 @@
 <script type="text/javascript">
 	jQuery(document).ready(
 			function() {
-			 $("#opdCombo").val("0");    
+			 $("#opdChooseCombo").val("0");    
 			
 			
 });
@@ -42,7 +42,7 @@
 		<tr >
 			<td width="40%" align="right">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Location: </td>
 			<td width="50%">
-				<select id="opdCombo" onchange="QUEUE.changeOPD(this)">
+				<select id="opdChooseCombo" onchange="QUEUE.changeOPD(this)">
 					<option value="0">-Please select-</option>
 					<c:forEach items="${listOPD}" var="opd">
 						<option value="${opd.answerConcept.id }"
