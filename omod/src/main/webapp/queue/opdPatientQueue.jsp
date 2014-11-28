@@ -23,31 +23,31 @@
 
 <table cellpadding="5" cellspacing="0" width="100%" id="queueList">
 <tr align="center" >
-	<th>S.No</th>
-	<th><spring:message code="patientqueue.queue.patientId"/></th>
-	<th><spring:message code="patientqueue.queue.patientName"/></th>
-	<th>Age</th>
-	<th>Gender</th>
-	<th>Category</th>
-	<th><spring:message code="patientqueue.queue.visitStatus"/></th>
-	<th><spring:message code="patientqueue.queue.status"/></th>
+	<th align="center">S.No</th>
+	<th align="center"><spring:message code="patientqueue.queue.patientId"/></th>
+	<th align="center"><spring:message code="patientqueue.queue.patientName"/></th>
+	<th align="center">Age</th>
+	<th align="center">Gender</th>
+	<!-- <th>Category</th> -->
+	<th align="center"><spring:message code="patientqueue.queue.visitStatus"/></th>
+	<th align="center">Doctor Processing</th>
 </tr>
 <c:choose>
 <c:when test="${not empty patientQueues}">
 <c:forEach items="${patientQueues}" var="queue" varStatus="varStatus">
 	<tr  align="center" class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } ' onclick="QUEUE.selectPatientInQueue('${queue.id}','${user}');">
-		<td><c:out value="${varStatus.count }"/></td>	
-		<td>${queue.patientIdentifier}</td>
-		<td>${fn:replace(fn:replace(queue.patientName,',',' '),'null','')}</td>
-		<td>${queue.age }</td>
-		<td>${queue.sex}</td>
-		<td>${queue.category}</td>
-		<td>${queue.visitStatus}
+		<td align="center"><c:out value="${varStatus.count }"/></td>	
+		<td align="center">${queue.patientIdentifier}</td>
+		<td align="center">${fn:replace(fn:replace(queue.patientName,',',' '),'null','')}</td>
+		<td align="center">${queue.age }</td>
+		<td align="center">${queue.sex}</td>
+		<%-- <td>${queue.category}</td> --%>
+		<td align="center">${queue.visitStatus}
 		<c:if test="${empty queue.visitStatus}">
 		Referred From ${queue.referralConceptName}
 		</c:if>
 		</td>
-		<td>${queue.status}</td>
+		<td align="center">${queue.status}</td>
 	</tr>
 </c:forEach>
 
