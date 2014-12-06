@@ -37,7 +37,9 @@ import org.openmrs.PersonAttributeType;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
+import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
+import org.openmrs.module.hospitalcore.model.IpdPatientAdmissionLog;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.hospitalcore.model.TriagePatientQueue;
@@ -209,6 +211,8 @@ public class OpdPatientQueueController {
 			@RequestParam("opdId") Integer opdId) {
 		HospitalCoreService hcs = (HospitalCoreService) Context
 		.getService(HospitalCoreService.class);
+		IpdService ipdService = (IpdService) Context
+		.getService(IpdService.class);
 		PatientQueueService queueService = Context
 				.getService(PatientQueueService.class);
 		Patient patient = Context.getPatientService().getPatient(patientId);
@@ -233,7 +237,8 @@ public class OpdPatientQueueController {
 		
 		OpdPatientQueueLog opql = queueService.getOpdPatientQueueLog(patient
 				.getPatientIdentifier().getIdentifier(), opdId);
-		if (opql != null) {
+		IpdPatientAdmissionLog ipal=ipdService.getIpdPatientAdmissionLog(opql);
+		if (ipal != null) {
 			return "redirect:/module/patientdashboard/main.htm?patientId="
 					+ opql.getPatient().getPatientId() + "&opdId="
 					+ opql.getOpdConcept().getConceptId() + "&visitStatus="
