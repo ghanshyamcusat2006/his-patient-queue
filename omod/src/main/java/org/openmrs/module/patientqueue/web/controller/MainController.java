@@ -69,11 +69,14 @@ public class MainController {
 			else if(r.getName().equalsIgnoreCase("Doctor")){
 				roleName="doctor";
 				Concept opdWardConcept = Context.getConceptService().getConceptByName("OPD WARD");
-				List<ConceptAnswer> list = (opdWardConcept!= null ?  new ArrayList<ConceptAnswer>(opdWardConcept.getAnswers()) : null);
-				if(CollectionUtils.isNotEmpty(list)){
-					Collections.sort(list, new ConceptAnswerComparator());
+				Concept specialClinicConcept = Context.getConceptService().getConceptByName("SPECIAL CLINIC");
+				List<ConceptAnswer> oList = (opdWardConcept!= null ?  new ArrayList<ConceptAnswer>(opdWardConcept.getAnswers()) : null);
+				List<ConceptAnswer> sList = (specialClinicConcept!= null ?  new ArrayList<ConceptAnswer>(specialClinicConcept.getAnswers()) : null);
+				sList.addAll(oList);
+				if(CollectionUtils.isNotEmpty(sList)){
+					Collections.sort(sList, new ConceptAnswerComparator());
 				}
-				model.addAttribute("listOPD",list);
+				model.addAttribute("listOPD",sList);
 				
 				if( opdId == null ){
 					opdId =  (Integer) session.getAttribute("opdRoomId");
@@ -84,15 +87,18 @@ public class MainController {
 			}
 			else{
 				roleName="sd";
-				Concept opdWardConcept = Context.getConceptService().getConceptByName("OPD WARD");
 				Concept triageConcept = Context.getConceptService().getConceptByName("TRIAGE");
+				Concept opdWardConcept = Context.getConceptService().getConceptByName("OPD WARD");
+				Concept specialClinicConcept = Context.getConceptService().getConceptByName("SPECIAL CLINIC");
 				List<ConceptAnswer> tList = (triageConcept!= null ?  new ArrayList<ConceptAnswer>(triageConcept.getAnswers()) : null);
 				List<ConceptAnswer> oList = (opdWardConcept!= null ?  new ArrayList<ConceptAnswer>(opdWardConcept.getAnswers()) : null);
-				oList.addAll(tList);
-				if(CollectionUtils.isNotEmpty(oList)){
-					Collections.sort(oList, new ConceptAnswerComparator());
+				List<ConceptAnswer> sList = (specialClinicConcept!= null ?  new ArrayList<ConceptAnswer>(specialClinicConcept.getAnswers()) : null);
+				sList.addAll(tList);
+				sList.addAll(oList);
+				if(CollectionUtils.isNotEmpty(sList)){
+					Collections.sort(sList, new ConceptAnswerComparator());
 				}
-				model.addAttribute("listOPD",oList);
+				model.addAttribute("listOPD",sList);
 				
 				if( opdId == null ){
 					opdId =  (Integer) session.getAttribute("opdRoomId");

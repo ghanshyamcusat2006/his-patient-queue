@@ -95,7 +95,7 @@ public class OpdPatientQueueController {
 						.listTriagePatientQueue(null, opdId, "", 0, 0);
 				model.put("patientQueues", patientQueues);
 				modl.addAttribute("user", "triageUser");
-			} else if (str.equals("OPD WARD")) {
+			} else if (str.equals("OPD WARD") || str.equals("SPECIAL CLINIC")) {
 				List<OpdPatientQueue> patientQueues = patientQueueService
 						.listOpdPatientQueue(null, opdId, "", 0, 0);
 				model.put("patientQueues", patientQueues);
