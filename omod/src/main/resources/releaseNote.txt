@@ -1,3 +1,8 @@
+0.9.7
+- #Before going to triage or OPD dashboard user has to choose the option on main page. 
+- #Triage patient history screen has been redesigned for better usage .
+
+
 0.9.6
 - #module upgradation
 
