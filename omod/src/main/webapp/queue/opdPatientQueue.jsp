@@ -30,7 +30,14 @@
 	<th align="center">Gender</th>
 	<!-- <th>Category</th> -->
 	<th align="center"><spring:message code="patientqueue.queue.visitStatus"/></th>
+	<c:choose>
+	<c:when test="${user eq 'triageUser'}">
+	<th align="center">Nurse Processing</th>
+	</c:when>
+	<c:otherwise>
 	<th align="center">Doctor Processing</th>
+	</c:otherwise>
+	</c:choose>
 </tr>
 <c:choose>
 <c:when test="${not empty patientQueues}">
