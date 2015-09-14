@@ -28,7 +28,7 @@
 <b class="boxHeader">Patient queue</b>
 <input type="hidden" id="pageId" value="patientQueue"/>
 <div class="box" >
-Location: <select id="opdCombo"  onchange="QUEUE.changeOPD(this)">
+OPD Name: <select id="opdCombo"  onchange="QUEUE.changeOPD(this)">
 	<option value="0">-Please select-</option>
 	<c:forEach items="${listOPD}" var="opd">
 		<option value="${opd.answerConcept.id }"  <c:if test="${opdId == opd.answerConcept.id  }">selected="selected"</c:if>>${opd.answerConcept.name}</option>
