@@ -28,8 +28,7 @@
 	<th><spring:message code="patientqueue.queue.patientName"/></th>
 	<th>Age</th>
 	<th>Gender</th>
-	<th><spring:message code="CreatedOn"/></th>
-	<th><spring:message code="VisitType"/></th>
+	<th><spring:message code="patientqueue.queue.referralType"/></th>
 	<th><spring:message code="patientqueue.queue.status"/></th>
 </tr>
 <c:choose>
@@ -41,7 +40,6 @@
 		<td>${queue.patientName}</td>
 		<td>${queue.age }</td>
 		<td>${queue.sex}</td>
-		<td>${queue.createdOn}</td>
 		<td>${queue.referralConceptName}</td>
 		<td>${queue.status}</td>
 	</tr>
