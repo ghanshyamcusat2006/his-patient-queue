@@ -28,21 +28,39 @@
 	<th><spring:message code="patientqueue.queue.patientName"/></th>
 	<th>Age</th>
 	<th>Gender</th>
-	<th><spring:message code="patientqueue.queue.referralType"/></th>
+	<th><spring:message code="CreatedOn"/></th>
+	<th><spring:message code="VisitType"/></th>
 	<th><spring:message code="patientqueue.queue.status"/></th>
 </tr>
 <c:choose>
 <c:when test="${not empty patientQueues}">
 <c:forEach items="${patientQueues}" var="queue" varStatus="varStatus">
-	<tr  align="center" class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } ' onclick="QUEUE.selectPatientInQueue('${queue.id}');">
+	<c:choose>
+		<c:when test="${queue.age >= '~60 years' }">
+	<tr  align="center" class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } ' onclick="QUEUE.selectPatientInQueue('${queue.id}');" style="background:#ffff00">
 		<td><c:out value="${varStatus.count }"/></td>	
 		<td>${queue.patientIdentifier}</td>
-		<td>${queue.patientName}</td>
-		<td>${queue.age }</td>
+		<td>${fn:replace(fn:replace(queue.patientName,',',' '),'null','')}</td>
+		<td>${queue.age}</td>
 		<td>${queue.sex}</td>
+		<td>${queue.createdOn}</td>
 		<td>${queue.referralConceptName}</td>
 		<td>${queue.status}</td>
 	</tr>
+	</c:when>
+	<c:otherwise>
+	<tr  align="center" class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } ' onclick="QUEUE.selectPatientInQueue('${queue.id}'); ">
+		<td><c:out value="${varStatus.count }"/></td>	
+		<td>${queue.patientIdentifier}</td>
+		<td>${fn:replace(fn:replace(queue.patientName,',',' '),'null','')}</td>
+		<td>${queue.age }</td>
+		<td>${queue.sex}</td>
+		<td>${queue.createdOn}</td>
+		<td>${queue.referralConceptName}</td>
+		<td>${queue.status}</td>
+	</tr>
+		</c:otherwise>
+	</c:choose>
 </c:forEach>
 
 </c:when>
