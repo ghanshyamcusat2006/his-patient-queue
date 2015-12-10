@@ -193,10 +193,10 @@ public class OpdPatientQueueController {
 					+ "&queueId="
 					+ queue.getId();
 		} else {
-			//System.out.println("queueItemId"+queueItemId);
+			
 			OpdPatientQueue queue = queueService
 					.getOpdPatientQueueById(queueItemId);
-			//System.out.println("queueId"+queue);
+			
 
 			queue.setStatus(Context.getAuthenticatedUser().getGivenName() + " "
 					+ OPDPatientQueueConstants.STATUS);
@@ -312,20 +312,9 @@ public class OpdPatientQueueController {
 		OpdPatientQueue opdPatientQueue = null;
 		 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		    String created = sdf.format(queue.getCreatedOn());
-//		    String h = sdf.format(hcss.getLastVisitTime(patient));
-			String sft= sdf.format(new Date())	;
+			String sft= sdf.format(patient.getDateCreated());
 			int value=sft.compareTo(created);
-			//int value1= sft.compareTo(changed);
-			System.out.println("created"+ created);
-			System.out.println("todays date"+ sft);
-			//System.out.println("changed"+ changed);
-		
-
-			System.out.println("****"+ created+"*******"+ sft+"*****");
-			
-         System.out.println("****"+value);
-			
-			
+					
 		if (pd == true) {
 			return "redirect:/module/patientdashboard/main.htm?patientId="
 			+ patientId + "&opdId=" + opdId;
