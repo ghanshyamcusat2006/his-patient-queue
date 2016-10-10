@@ -21,6 +21,7 @@
 
 package org.openmrs.module.patientqueue.web.controller.queue;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -37,8 +38,12 @@ import org.openmrs.ConceptName;
 import org.openmrs.Patient;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
+import org.openmrs.module.hospitalcore.model.IpdPatientAdmissionLog;
+import org.openmrs.module.hospitalcore.model.IpdPatientAdmitted;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
+import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.patientqueue.util.OPDPatientQueueConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -82,10 +87,30 @@ public class OpdPatientQueueController {
 		if (opdId != null && opdId > 0) {
 			PatientQueueService patientQueueService = Context
 					.getService(PatientQueueService.class);
-
+           
 			List<OpdPatientQueue> patientQueues = patientQueueService
 					.listOpdPatientQueue(null,  opdId, "", 0, 0);
-			model.put("patientQueues", patientQueues);
+			List<OpdPatientQueue>opq=new ArrayList<OpdPatientQueue>();
+			
+		for(OpdPatientQueue op:patientQueues)
+			{
+			IpdService ipdService = (IpdService) Context.getService(IpdService.class);
+			IpdPatientAdmitted admitted = ipdService.getAdmittedByPatientId(op.getPatient().getPatientId() );
+			
+			//Ipd patient should not be in the queue
+			if(admitted==null)
+		{
+		opq.add(op);
+		
+		model.put("patientQueues", opq);
+		
+			}
+		
+				
+			}
+			
+			 
+			
 		}
 
 		return "/module/patientqueue/queue/opdPatientQueue";
@@ -195,6 +220,7 @@ public class OpdPatientQueueController {
 			.getConceptId() + "&queueId=" + opq.getId();
 		}
 
+		
 		OpdPatientQueue queue = new OpdPatientQueue();
 		queue.setOpdConcept(opdConcept);
 		queue.setOpdConceptName(opdConcept.getName().getName());

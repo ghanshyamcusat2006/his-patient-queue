@@ -21,13 +21,16 @@
 
 package org.openmrs.module.patientqueue.web.controller.ajax;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.openmrs.api.context.Context;
+import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
+import org.openmrs.module.hospitalcore.model.IpdPatientAdmitted;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,8 +55,22 @@ public class OpdPatientQueueAjaxController {
 		if( opdId != null && opdId > 0 ) {
 			PatientQueueService patientQueueService = Context.getService(PatientQueueService.class);
 			List<OpdPatientQueue> patientQueues = patientQueueService.listOpdPatientQueue(null, opdId, "",0, 0);
-			model.put("patientQueues", patientQueues );
-
+			List<OpdPatientQueue>opq=new ArrayList<OpdPatientQueue>();
+			for(OpdPatientQueue op:patientQueues)
+			{IpdService ipdService = (IpdService) Context.getService(IpdService.class);
+			IpdPatientAdmitted admitted = ipdService.getAdmittedByPatientId(op.getPatient().getPatientId() );
+			
+			//Ipd patient should not be in the queue
+			if(admitted==null)
+		{
+		opq.add(op);
+		
+		model.put("patientQueues", opq);
+		
+			}
+				
+			}
+			
 		}
 		return "/module/patientqueue/ajax/opdPatientQueueAjax";
 	}
