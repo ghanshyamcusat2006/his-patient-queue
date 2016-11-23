@@ -28,7 +28,7 @@
 	<th><spring:message code="patientqueue.queue.patientName"/></th>
 	<th>Age</th>
 	<th>Gender</th>
-	<th><spring:message code="CreatedOn"/></th>
+	<th><spring:message code="Registration Time"/></th>
 	<th><spring:message code="VisitType"/></th>
 	<th><spring:message code="patientqueue.queue.status"/></th>
 </tr>
