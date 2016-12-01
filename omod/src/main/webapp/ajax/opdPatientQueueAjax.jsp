@@ -26,10 +26,10 @@
 	<th>#</th>
 	<th><spring:message code="patientqueue.queue.patientId"/></th>
 	<th><spring:message code="patientqueue.queue.patientName"/></th>
-	<th>Age</th>
-	<th>Gender</th>
-	<th><spring:message code="CreatedOn"/></th>
-	<th><spring:message code="VisitType"/></th>
+	<th><spring:message code="patientqueue.queue.age"/></th>
+	<th><spring:message code="patientqueue.queue.sex"/></th>
+	<th><spring:message code="patientqueue.queue.registrationTime"/></th>
+	<th><spring:message code="patientqueue.queue.visitType"/></th>
 	<th><spring:message code="patientqueue.queue.status"/></th>
 </tr>
 <c:choose>
