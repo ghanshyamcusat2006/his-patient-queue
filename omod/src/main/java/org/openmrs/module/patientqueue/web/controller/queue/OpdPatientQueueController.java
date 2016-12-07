@@ -21,6 +21,7 @@
 
 package org.openmrs.module.patientqueue.web.controller.queue;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +36,7 @@ import org.openmrs.Concept;
 import org.openmrs.ConceptClass;
 import org.openmrs.ConceptDatatype;
 import org.openmrs.ConceptName;
+import org.openmrs.Encounter;
 import org.openmrs.Patient;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
@@ -260,11 +262,44 @@ public class OpdPatientQueueController {
 		queue.setBirthDate(patient.getBirthdate());
 		queue.setUser(Context.getAuthenticatedUser());
 		queue.setStatus(Context.getAuthenticatedUser().getGivenName() + " "+ OPDPatientQueueConstants.STATUS);
-
-		//ghanshyam,11-nov-2013,Feedback #2937 Dealing with Dead Patient
-		Boolean pd = patient.getDead();
+            // Patient from search in system should not be added in queue after 24 hr
 		OpdPatientQueue opdPatientQueue = null;
+		if(queueService.getLastOPDEncounter(patient)==null)
+		{ 
+			return "redirect:/module/patientqueue/main.htm?opdId=" + opdId;
+		}
+		else
+		{
+			Encounter enc=queueService.getLastOPDEncounter(patient);
+		  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		   String created = sdf.format(enc.getDateCreated());
+          String sft= sdf.format(new Date());
+			int value=sft.compareTo(created);
+			Boolean pd = patient.getDead();
 		if (pd == true) {
+			return "redirect:/module/patientdashboard/main.htm?patientId="
+					+ patientId + "&opdId=" + opdId + "&referralId="
+					+ referralId;
+			} else if(value==0)  {
+			opdPatientQueue = queueService.saveOpdPatientQueue(queue);
+			return "redirect:/module/patientdashboard/main.htm?patientId="
+			+ queue.getPatient().getPatientId() + "&opdId="
+			+ queue.getOpdConcept().getConceptId() + "&referralId="
+					+ referralId+ "&queueId=" + opdPatientQueue.getId();
+			}
+			else
+			{
+				  	return "redirect:/module/patientdashboard/main.htm?patientId="
+							+ queue.getPatient().getPatientId() + "&opdId="
+							+ queue.getOpdConcept().getConceptId() + "&referralId="
+									+ referralId;
+
+			}
+	}
+		//ghanshyam,11-nov-2013,Feedback #2937 Dealing with Dead Patient
+		//Boolean pd = patient.getDead();
+	//	OpdPatientQueue opdPatientQueue = null;
+	/*	if (pd == true) {
 			return "redirect:/module/patientdashboard/main.htm?patientId="
 					+ patientId + "&opdId=" + opdId + "&referralId="
 					+ referralId;
@@ -274,7 +309,7 @@ public class OpdPatientQueueController {
 			+ queue.getPatient().getPatientId() + "&opdId="
 			+ queue.getOpdConcept().getConceptId() + "&referralId="
 			+ referralId + "&queueId=" + opdPatientQueue.getId();
-		}
+		}*/
 
 	}
 
