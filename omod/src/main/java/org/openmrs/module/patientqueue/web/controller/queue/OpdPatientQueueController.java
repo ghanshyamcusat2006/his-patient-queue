@@ -266,7 +266,10 @@ public class OpdPatientQueueController {
 		OpdPatientQueue opdPatientQueue = null;
 		if(queueService.getLastOPDEncounter(patient)==null)
 		{ 
-			return "redirect:/module/patientqueue/main.htm?opdId=" + opdId;
+			return "redirect:/module/patientdashboard/main.htm?patientId="
+					+ queue.getPatient().getPatientId() + "&opdId="
+					+ queue.getOpdConcept().getConceptId() + "&referralId="
+							+ referralId;
 		}
 		else
 		{
