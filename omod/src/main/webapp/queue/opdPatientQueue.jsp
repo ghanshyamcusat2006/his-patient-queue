@@ -36,7 +36,7 @@
 <c:when test="${not empty patientQueues}">
 <c:forEach items="${patientQueues}" var="queue" varStatus="varStatus">
 	<c:choose>
-		<c:when test="${queue.age >= '~60 years' }">
+		<c:when test="${queue.patient.age>=60 }">
 	<tr  align="center" class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } ' onclick="QUEUE.selectPatientInQueue('${queue.id}');" style="background:#ffff00">
 		<td><c:out value="${varStatus.count }"/></td>	
 		<td>${queue.patientIdentifier}</td>
