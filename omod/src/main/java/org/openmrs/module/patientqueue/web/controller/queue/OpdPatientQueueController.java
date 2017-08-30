@@ -204,7 +204,7 @@ public class OpdPatientQueueController {
 		PatientQueueService queueService = Context
 				.getService(PatientQueueService.class);
 		Patient patient = Context.getPatientService().getPatient(patientId);
-
+       
 		Concept opdConcept = Context.getConceptService().getConcept(opdId);
 
 		if (opdConcept == null) {
@@ -230,8 +230,10 @@ public class OpdPatientQueueController {
 		queue.setCreatedOn(new Date());
 		queue.setPatientIdentifier(patient.getPatientIdentifier()
 				.getIdentifier());
-		queue.setPatientName(patient.getGivenName() + " "
-				+ patient.getMiddleName() + " " + patient.getFamilyName());
+		
+		
+			queue.setPatientName(patient.getGivenName() + " "+ patient.getFamilyName());
+		
 
 		// TODO Is this what we want ???
 		String gpRevisit = Context.getAdministrationService()
