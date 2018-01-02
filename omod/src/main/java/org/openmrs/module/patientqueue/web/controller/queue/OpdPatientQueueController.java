@@ -37,7 +37,9 @@ import org.openmrs.ConceptClass;
 import org.openmrs.ConceptDatatype;
 import org.openmrs.ConceptName;
 import org.openmrs.Encounter;
+import org.openmrs.Obs;
 import org.openmrs.Patient;
+import org.openmrs.Person;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.IpdService;
@@ -87,6 +89,7 @@ public class OpdPatientQueueController {
 			Map<String, Object> model, HttpServletRequest request) {
 
 		if (opdId != null && opdId > 0) {
+			
 			PatientQueueService patientQueueService = Context
 					.getService(PatientQueueService.class);
            
@@ -101,8 +104,16 @@ public class OpdPatientQueueController {
 			
 			//Ipd patient should not be in the queue
 			if(admitted==null)
-		{
-		opq.add(op);
+		{ Person per=Context.getPersonService().getPerson(op.getPatient().getPatientId());
+				List<Obs> ob=Context.getObsService().getObservationsByPerson(per);
+			if(ob!=null)
+			{	if(ob.get(0).getEncounter().getEncounterType().getName().equals("REGINITIAL")||
+						ob.get(0).getEncounter().getEncounterType().getName().equals("REGREVISIT"))
+				{
+					
+					opq.add(op);
+				}
+			}
 		
 		model.put("patientQueues", opq);
 		
@@ -134,6 +145,7 @@ public class OpdPatientQueueController {
 					.getService(PatientQueueService.class);
 			List<OpdPatientQueue> patientQueues = patientQueueService
 					.listOpdPatientQueue(text.trim(), opdId, "", 0, 0);
+			
 			model.put("patientQueues", patientQueues);
 			model.put("queueText", text);
 		}
@@ -209,6 +221,7 @@ public class OpdPatientQueueController {
 
 		if (opdConcept == null) {
 			log.info("OPD Ward is null");
+			
 			return "redirect:/module/patientqueue/main.htm";
 		}
 		
