@@ -27,6 +27,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.openmrs.ConceptName;
 import org.openmrs.Obs;
 import org.openmrs.Person;
 import org.openmrs.api.context.Context;
@@ -54,7 +55,7 @@ public class OpdPatientQueueAjaxController {
 	public String viewOpdPatientQueue(
             @RequestParam("opdId") Integer opdId,
             Map<String, Object> model, HttpServletRequest request){
-		if( opdId != null && opdId > 0 ) {
+		if( opdId != null && opdId > 0 ) { model.put("opdId", opdId);
 			PatientQueueService patientQueueService = Context.getService(PatientQueueService.class);
 			List<OpdPatientQueue> patientQueues = patientQueueService.listOpdPatientQueue(null, opdId, "",0, 0);
 			List<OpdPatientQueue>opq=new ArrayList<OpdPatientQueue>();
@@ -64,19 +65,40 @@ public class OpdPatientQueueAjaxController {
 			
 			//Ipd patient should not be in the queue
 			if(admitted==null)
-		{
+		{   
 				Person per=Context.getPersonService().getPerson(op.getPatient().getPatientId());
 				List<Obs> ob=Context.getObsService().getObservationsByPerson(per);
+			
 				if(ob!=null)
-				{
-					if(ob.get(0).getEncounter().getEncounterType().getName().equals("REGINITIAL")||
-						ob.get(0).getEncounter().getEncounterType().getName().equals("REGREVISIT"))
-				{
-					
-					opq.add(op);
-				}
+				{	
+					for(int i=0;i<ob.size();i++)
+					{
+						if(ob.get(i).getConcept().getId()==3309)
+						{ 	model.put("ref",ob.get(i).getConcept().getId());
+							model.put("cvalue", ob.get(i).getValueCoded().getConceptId());
+							
+							if(op.getReferralConcept().getConceptId()!=945)
+							
+								{
+								opq.add(op);
+								}
+							break;
+							
+						}
 					}
+					if(ob.get(0).getEncounter()!=null)
+					{
+					if(ob.get(0).getEncounter().getEncounterType().getName().equals("REGINITIAL")||
+							ob.get(0).getEncounter().getEncounterType().getName().equals("REGREVISIT"))
+					{
+						model.put("reginitail",ob.get(0).getEncounter().getEncounterType().getName());
+						
+						opq.add(op);
+					}
+					}
+				}
 		model.put("patientQueues", opq);
+		
 		
 			}
 				

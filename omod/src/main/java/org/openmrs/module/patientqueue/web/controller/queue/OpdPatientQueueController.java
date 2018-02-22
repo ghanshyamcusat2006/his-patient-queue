@@ -87,9 +87,9 @@ public class OpdPatientQueueController {
 	public String viewOpdPatientQueue(
 			@RequestParam(value = "opdId", required = false) Integer opdId,
 			Map<String, Object> model, HttpServletRequest request) {
-
+		
 		if (opdId != null && opdId > 0) {
-			
+			model.put("opdId", opdId);
 			PatientQueueService patientQueueService = Context
 					.getService(PatientQueueService.class);
            
@@ -104,26 +104,42 @@ public class OpdPatientQueueController {
 			
 			//Ipd patient should not be in the queue
 			if(admitted==null)
-		{ Person per=Context.getPersonService().getPerson(op.getPatient().getPatientId());
+		{
+				Person per=Context.getPersonService().getPerson(op.getPatient().getPatientId());
 				List<Obs> ob=Context.getObsService().getObservationsByPerson(per);
+	         
 			if(ob!=null)
-			{	if(ob.get(0).getEncounter().getEncounterType().getName().equals("REGINITIAL")||
+			{	
+				for(int i=0;i<ob.size();i++)
+				{
+					if(ob.get(i).getConcept().getId()==3309)
+					{ 	model.put("ref",ob.get(i).getConcept().getId());
+						model.put("cvalue", ob.get(i).getValueCoded().getConceptId());
+						
+						if(op.getReferralConcept().getConceptId()!=945)
+							
+						{opq.add(op);}
+						break;
+						
+					}
+				}
+				if(ob.get(0).getEncounter()!=null)
+				{
+				if(ob.get(0).getEncounter().getEncounterType().getName().equals("REGINITIAL")||
 						ob.get(0).getEncounter().getEncounterType().getName().equals("REGREVISIT"))
 				{
+					model.put("reginitail",ob.get(0).getEncounter().getEncounterType().getName());
 					
 					opq.add(op);
+				}
 				}
 			}
 		
 		model.put("patientQueues", opq);
 		
 			}
-		
 				
 			}
-			
-			 
-			
 		}
 
 		return "/module/patientqueue/queue/opdPatientQueue";
