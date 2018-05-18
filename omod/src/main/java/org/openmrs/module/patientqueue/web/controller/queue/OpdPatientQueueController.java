@@ -44,10 +44,8 @@ import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
-import org.openmrs.module.hospitalcore.model.IpdPatientAdmissionLog;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmitted;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
-import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.patientqueue.util.OPDPatientQueueConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -96,6 +94,7 @@ public class OpdPatientQueueController {
 			List<OpdPatientQueue> patientQueues = patientQueueService
 					.listOpdPatientQueue(null,  opdId, "", 0, 0);
 			List<OpdPatientQueue>opq=new ArrayList<OpdPatientQueue>();
+			Concept con=Context.getConceptService().getConcept("Internal referral");
 			
 		for(OpdPatientQueue op:patientQueues)
 			{
@@ -112,7 +111,7 @@ public class OpdPatientQueueController {
 			{	
 				for(int i=0;i<ob.size();i++)
 				{
-					if(ob.get(i).getConcept().getId()==3309)
+					if(ob.get(i).getConcept().getId()==con.getConceptId())
 					{ 	model.put("ref",ob.get(i).getConcept().getId());
 						model.put("cvalue", ob.get(i).getValueCoded().getConceptId());
 						
