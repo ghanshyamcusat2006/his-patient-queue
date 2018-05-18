@@ -44,10 +44,8 @@ import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.PatientQueueService;
-import org.openmrs.module.hospitalcore.model.IpdPatientAdmissionLog;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmitted;
 import org.openmrs.module.hospitalcore.model.OpdPatientQueue;
-import org.openmrs.module.hospitalcore.model.OpdPatientQueueLog;
 import org.openmrs.module.patientqueue.util.OPDPatientQueueConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -137,7 +135,6 @@ public class OpdPatientQueueController {
 			}
 		
 		model.put("patientQueues", opq);
-		System.out.println("yyyyyyyyyyyyyyyy"+opq.size());
 		
 			}
 				
