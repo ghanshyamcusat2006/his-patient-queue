@@ -274,10 +274,12 @@ public class OpdPatientQueueController {
 		else
 		{
 			Encounter enc=queueService.getLastOPDEncounter(patient);
-		  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		   String created = sdf.format(enc.getDateCreated());
-          String sft= sdf.format(new Date());
-			int value=sft.compareTo(created);
+		    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		    String created = sdf.format(enc.getDateCreated());
+            String sft= sdf.format(new Date());
+            // int value=sft.compareTo(created);
+       		// added below line in view of issue to skip patient queue creation while searching patient in system.
+            int value = 1;
 			Boolean pd = patient.getDead();
 		if (pd == true) {
 			return "redirect:/module/patientdashboard/main.htm?patientId="
